@@ -1,0 +1,29 @@
+# Виконувані файли та результати компіляції
+*.exe
+*.o
+*.obj
+*.dll
+*.so
+*.out
+
+# Тимчасові файли
+*.log
+*.tmp
+*.cache
+
+# Папки збірки
+/build/
+/bin/
+/dist/
+
+# Службові файли IDE
+.vscode/
+.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.user
+
+# Системні файли
+Thumbs.db
+*.DS_Store
