@@ -71,6 +71,32 @@ int readPositiveInteger(const char* prompt){
     return value;
 }
 
+void generateVariants(int variants[][MAX_TASKS_PER_VARIANT],int variantCount,int tasksPerVariant,int taskCount) {
+    int indexes[MAX_TASKS];
+
+    std::random_device rd;
+    std::mt19937 generator(rd());
+
+    for (int i = 0; i < variantCount; i++) {
+
+        // Створюємо масив індексів усіх завдань
+        for (int j = 0; j < taskCount; j++) {
+            indexes[j] = j;
+        }
+
+        // Перемішуємо індекси випадковим чином
+        std::shuffle(
+            indexes,
+            indexes + taskCount,
+            generator
+        );
+
+        // Записуємо вибрані завдання в матрицю
+        for (int j = 0; j < tasksPerVariant; j++) {
+            variants[i][j] = indexes[j];
+        }
+    }
+}
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -83,12 +109,42 @@ int main() {
     std::cout << "Завантажено завдань: "<< taskCount << "\n\n";
 
     int variantCount = readPositiveInteger("Введіть кількість варіантів: ");
+    if (variantCount < 1 || variantCount > MAX_VARIANTS) {
+        std::cerr << "Помилка: кількість варіантів має бути від 1 до "
+                  << MAX_VARIANTS << ".\n";
+        return 1;
+    }
 
     int tasksPerVariant = readPositiveInteger("Введіть кількість завдань у варіанті: ");
+    if (tasksPerVariant < 1 || tasksPerVariant > MAX_TASKS_PER_VARIANT || tasksPerVariant > taskCount) {
 
+        std::cerr << "Помилка: некоректна кількість завдань "
+                  << "у варіанті.\n";
+        return 1;
+    }
     std::cout << "\nПараметри генерації:\n";
     std::cout << "Кількість варіантів: "<< variantCount << '\n';
     std::cout << "Завдань у кожному варіанті: "<< tasksPerVariant << '\n';
+    
+    generateVariants(
+        variants,
+        variantCount,
+        tasksPerVariant,
+        taskCount
+    );
+
+    std::cout << "\nЗгенеровані варіанти:\n";
+
+    for (int i = 0; i < variantCount; i++) {
+        std::cout << "Варіант " << i + 1 << ": ";
+
+        for (int j = 0; j < tasksPerVariant; j++) {
+            std::cout << variants[i][j] + 1 << " ";
+        }
+
+        std::cout << '\n';
+    }
+
     return 0;
 }
 
