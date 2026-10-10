@@ -23,12 +23,60 @@ int variants[MAX_VARIANTS][MAX_TASKS_PER_VARIANT];
 // Кількість завдань, зчитаних із файлу
 int taskCount = 0;
 
+bool loadTasks(const char* filename,char tasks[][MAX_TASK_LENGTH],int& taskCount) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Помилка відкриття файлу: "
+                  << filename << '\n';
+        return false;
+    }
+    taskCount = 0;
+    std::string line;
+    while (std::getline(file, line)) {
+        // Пропускаємо порожні рядки
+        if (line.find_first_not_of(" \t\r") == std::string::npos) {
+            continue;
+        }
+        // Перевіряємо кількість завдань
+        if (taskCount >= MAX_TASKS) {
+            std::cerr << "Перевищено максимальну кількість завдань.\n";
+            return false;
+        }
+        // Перевіряємо довжину тексту
+        if (line.length() >= MAX_TASK_LENGTH) {
+            std::cerr << "Занадто довгий текст завдання.\n";
+            return false;
+        }
+        // Копіюємо текст у масив
+        std::strcpy(tasks[taskCount], line.c_str());
+        taskCount++;
+    }
+    if (file.bad()) {
+        std::cerr << "Помилка читання файлу.\n";
+        return false;
+    }
+    if (taskCount == 0) {
+        std::cerr << "Файл не містить завдань.\n";
+        return false;
+    }
+    return true;
+}
+
+
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    std::cout << "Генератор варіантів контрольної роботи\n";
-    std::cout << "Масиви та матриця успішно оголошені.\n";
+    std::cout << "Генератор варіантів контрольної роботи\n\n";
 
+    if (!loadTasks("task.txt", tasks, taskCount)) {
+        std::cin.get();
+        return 1;
+    }
+
+    std::cout << "Завдання успішно завантажені!\n";
+    std::cout << "Кількість завдань: " << taskCount << '\n';
+
+    std::cin.get();
     return 0;
 }
