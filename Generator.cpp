@@ -62,13 +62,30 @@ bool loadTasks(const char* filename,char tasks[][MAX_TASK_LENGTH],int& taskCount
     return true;
 }
 
-int readPositiveInteger(const char* prompt){
+
+int readPositiveInteger(const char* prompt) {
     int value;
 
-    std::cout << prompt;
-    std::cin >> value;
+    while (true) {
+        std::cout << prompt;
 
-    return value;
+        if (std::cin >> value && value > 0) {
+            std::cin.ignore(
+                std::numeric_limits<std::streamsize>::max(),
+                '\n'
+            );
+
+            return value;
+        }
+
+        std::cout << "Помилка! Введіть ціле додатне число.\n";
+
+        std::cin.clear();
+        std::cin.ignore(
+            std::numeric_limits<std::streamsize>::max(),
+            '\n'
+        );
+    }
 }
 
 void generateVariants(int variants[][MAX_TASKS_PER_VARIANT],int variantCount,int tasksPerVariant,int taskCount) {
