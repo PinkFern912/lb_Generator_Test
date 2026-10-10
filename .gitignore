@@ -27,3 +27,6 @@
 # Системні файли
 Thumbs.db
 *.DS_Store
+
+# Результати тестування
+variants.txt
