@@ -98,6 +98,29 @@ void generateVariants(int variants[][MAX_TASKS_PER_VARIANT],int variantCount,int
     }
 }
 
+void printVariants(const int variants[][MAX_TASKS_PER_VARIANT],int variantCount,int tasksPerVariant,const char tasks[][MAX_TASK_LENGTH]) {
+    for (int i = 0; i < variantCount; i++) {
+
+        std::cout << "\n========================================\n";
+        std::cout << "             ВАРІАНТ №" << i + 1 << '\n';
+        std::cout << "========================================\n";
+
+        for (int j = 0; j < tasksPerVariant; j++) {
+
+            int taskIndex = variants[i][j];
+
+            std::cout << "\nЗавдання " << j + 1
+                      << " (№" << taskIndex + 1
+                      << " у банку):\n";
+
+            std::cout << tasks[taskIndex] << "\n";
+        }
+    }
+
+    std::cout << "\n========================================\n";
+    std::cout << "Генерацію завершено.\n";
+}
+
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
@@ -126,24 +149,9 @@ int main() {
     std::cout << "Кількість варіантів: "<< variantCount << '\n';
     std::cout << "Завдань у кожному варіанті: "<< tasksPerVariant << '\n';
     
-    generateVariants(
-        variants,
-        variantCount,
-        tasksPerVariant,
-        taskCount
-    );
+    generateVariants(variants,variantCount,tasksPerVariant,taskCount);
 
-    std::cout << "\nЗгенеровані варіанти:\n";
-
-    for (int i = 0; i < variantCount; i++) {
-        std::cout << "Варіант " << i + 1 << ": ";
-
-        for (int j = 0; j < tasksPerVariant; j++) {
-            std::cout << variants[i][j] + 1 << " ";
-        }
-
-        std::cout << '\n';
-    }
+    printVariants(variants,variantCount,tasksPerVariant,tasks);
 
     return 0;
 }
