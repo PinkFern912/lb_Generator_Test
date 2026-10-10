@@ -62,6 +62,15 @@ bool loadTasks(const char* filename,char tasks[][MAX_TASK_LENGTH],int& taskCount
     return true;
 }
 
+int readPositiveInteger(const char* prompt){
+    int value;
+
+    std::cout << prompt;
+    std::cin >> value;
+
+    return value;
+}
+
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -69,14 +78,17 @@ int main() {
 
     std::cout << "Генератор варіантів контрольної роботи\n\n";
 
-    if (!loadTasks("task.txt", tasks, taskCount)) {
-        std::cin.get();
-        return 1;
-    }
+    if (!loadTasks("task.txt", tasks, taskCount)) {return 1;}
 
-    std::cout << "Завдання успішно завантажені!\n";
-    std::cout << "Кількість завдань: " << taskCount << '\n';
+    std::cout << "Завантажено завдань: "<< taskCount << "\n\n";
 
-    std::cin.get();
+    int variantCount = readPositiveInteger("Введіть кількість варіантів: ");
+
+    int tasksPerVariant = readPositiveInteger("Введіть кількість завдань у варіанті: ");
+
+    std::cout << "\nПараметри генерації:\n";
+    std::cout << "Кількість варіантів: "<< variantCount << '\n';
+    std::cout << "Завдань у кожному варіанті: "<< tasksPerVariant << '\n';
     return 0;
 }
+
